@@ -1,3 +1,13 @@
+var fs = require("fs");
+
+fs.readFile("hthomas93.json", "utf8", function (error, data) {
+  if (error) {
+    return console.log(error)
+  }
+
+  console.log(data);
+})
+
 const colors = {
   green: {
     wrapperBackground: "#E6E1C3",
@@ -25,7 +35,7 @@ const colors = {
   }
 };
 
-function generateHTML(data) {
+const htmlContent = function generateHTML(data) {
   return `<!DOCTYPE html>
 <html lang="en">
    <head>
@@ -171,4 +181,8 @@ function generateHTML(data) {
           } 
          }
       </style>`
-        }
+}
+
+fs.writeFile("index.html", htmlContent, function (err) {
+  console.log("ERROR" + err);
+})

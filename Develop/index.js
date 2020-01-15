@@ -27,27 +27,39 @@ let ghStars
 // Number of users following
 let followingNum;
 
+// call the inquirer node module
 inquirer
+    // call the prompt method
     .prompt([{
+        // type of prompt (text input)
         type: "input",
+        // displayed prompt message
         message: "What is your Github username?",
+        // what the name of the response is
         name: "username"
     },
     {
+        // type of prompt (checkbox)
         type: "checkbox",
+        // displayed prompt message
         message: "What is your favorite color?",
+        // checkbox choices
         choices: [
             "Green",
             "Blue",
             "Pink",
             "Red"
         ],
+        // what the name of the response is
         name: "color"
 
     }])
+    // asynchronous, what to do after receiving a response
     .then(function (response) {
+        // sets ghUser constant to the username response, formatted
         const ghUser = response.username.split(" ").join(" ") + '.json'
 
+        // brings in the fs module to write ghUser info to the file
         fs.writeFile(
             ghUser, JSON.stringify(response, null, '\t'), function (err) {
                 if (err) {
@@ -80,20 +92,18 @@ function ghAPI(ghURL) {
 
     axios.get(ghURL)
         .then(function (response) {
-            // console.log(response.data);
+            console.log(response.data);
 
 
-            let profileImage = (response.data.avatar_url + ".png");
-            let userName = (response.data.login);
-            let userLocation = (response.data.location);
-            let ghProfile = (response.data.html_url);
-            let userBlog = (response.data.blog);
-            let userBio = (response.data.bio);
-            let repoNum = (response.data.public_repos);
-            let followerNum = (response.data.followers);
-            let followingNum = (response.data.following);
-            // let userGHStars =  Create another axios call for - ;
-
+            profileImage = (response.data.avatar_url + ".png");
+            userName = (response.data.login);
+            userLocation = (response.data.location);
+            ghProfile = (response.data.html_url);
+            userBlog = (response.data.blog);
+            userBio = (response.data.bio);
+            repoNum = (response.data.public_repos);
+            followerNum = (response.data.followers);
+            followingNum = (response.data.following);
         });
 };
 
