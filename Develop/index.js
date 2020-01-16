@@ -84,7 +84,12 @@ function ghAPI(ghURL) {
                 followerNum: response.data.followers,
                 followingNum: response.data.following
             }
-            generate.generateHTML(data);
+            const html = generate.generateHTML(data);
+            fs.writeFile(`${data.userName}.html`, html, function (err) {
+                if (err) {
+                    console.log("It's fucked!" + err);
+                }
+            })
         })
 };
 
