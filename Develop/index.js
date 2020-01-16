@@ -6,7 +6,7 @@ const axios = require("axios").default;
 const inquirer = require("inquirer");
 
 const generate = require("./generateHTML.js");
-
+let color;
 
 // call the inquirer node module
 inquirer
@@ -20,17 +20,12 @@ inquirer
         name: "username"
     },
     {
-        // type of prompt (checkbox)
-        type: "checkbox",
+        // type of prompt (list)
+        type: "list",
         // displayed prompt message
         message: "What is your favorite color?",
         // checkbox choices
-        choices: [
-            "Green",
-            "Blue",
-            "Pink",
-            "Red"
-        ],
+        choices: Object.keys(generate.colors),
         // what the name of the response is
         name: "color"
     }])
@@ -38,7 +33,8 @@ inquirer
     .then(function (response) {
         // sets ghUser constant to the username response, formatted
         const ghUser = response.username.split(" ").join(" ") + '.json'
-
+        color = response.color;
+        console.log(color);
         // brings in the fs module to write ghUser info to the file named the value of ghUser
         fs.writeFile(
             ghUser, JSON.stringify(response, null, '\t'), function (err) {
@@ -47,20 +43,10 @@ inquirer
                 }
 
                 console.log("File saved!");
-
-                //==============================================
-                // Sets up URL for main GH API Call
-                //==============================================
                 const ghURL = "https://api.github.com/users/" + response.username;
                 console.log(ghURL);
-                //==============================================
-                // Sets up URL for starred GH API Call
-                //==============================================
                 const ghStarURL = "https://api.github.com/users/" + response.username + "/starred";
                 console.log(ghStarURL);
-                //==============================================
-                // Put URL in function
-                //==============================================
                 ghAPI(ghURL);
                 ghStarAPI(ghStarURL);
 
@@ -74,6 +60,7 @@ function ghAPI(ghURL) {
         .then(function (response) {
             console.log(response.data);
             const data = {
+                color: color,
                 profileImage: response.data.avatar_url + ".png",
                 userName: response.data.login,
                 userLocation: response.data.location,
