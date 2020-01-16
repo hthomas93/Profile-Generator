@@ -5,27 +5,7 @@ const axios = require("axios").default;
 // requires the use of inquirer node package for user input
 const inquirer = require("inquirer");
 
-// Profile image
-let profileImage;
-// User name
-let userName;
-// Links to the following:
-// User location via Google Maps
-let userLocation;
-// User GitHub profile
-let ghProfile;
-// User blog
-let userBlog;
-// User bio
-let userBio;
-// Number of public repositories
-let repoNum;
-// Number of followers
-let followerNum;
-// Number of GitHub stars
-let ghStars
-// Number of users following
-let followingNum;
+
 
 // call the inquirer node module
 inquirer
@@ -52,14 +32,13 @@ inquirer
         ],
         // what the name of the response is
         name: "color"
-
     }])
     // asynchronous, what to do after receiving a response
     .then(function (response) {
         // sets ghUser constant to the username response, formatted
         const ghUser = response.username.split(" ").join(" ") + '.json'
 
-        // brings in the fs module to write ghUser info to the file
+        // brings in the fs module to write ghUser info to the file named the value of ghUser
         fs.writeFile(
             ghUser, JSON.stringify(response, null, '\t'), function (err) {
                 if (err) {
@@ -93,18 +72,19 @@ function ghAPI(ghURL) {
     axios.get(ghURL)
         .then(function (response) {
             console.log(response.data);
-
-
-            profileImage = (response.data.avatar_url + ".png");
-            userName = (response.data.login);
-            userLocation = (response.data.location);
-            ghProfile = (response.data.html_url);
-            userBlog = (response.data.blog);
-            userBio = (response.data.bio);
-            repoNum = (response.data.public_repos);
-            followerNum = (response.data.followers);
-            followingNum = (response.data.following);
-        });
+            const data = {
+                profileImage: response.data.avatar_url + ".png",
+                userName: response.data.login,
+                userLocation: response.data.location,
+                ghProfile: response.data.html_url,
+                userBlog: response.data.blog,
+                userBio: response.data.bio,
+                repoNum: response.data.public_repos,
+                followerNum: response.data.followers,
+                followingNum: response.data.following
+            }
+            console.log(data);
+        })
 };
 
 function ghStarAPI(ghStarURL) {
