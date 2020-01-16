@@ -5,6 +5,7 @@ const axios = require("axios").default;
 // requires the use of inquirer node package for user input
 const inquirer = require("inquirer");
 
+const generate = require("./generateHTML.js");
 
 
 // call the inquirer node module
@@ -83,7 +84,7 @@ function ghAPI(ghURL) {
                 followerNum: response.data.followers,
                 followingNum: response.data.following
             }
-            console.log(data);
+            generate.generateHTML(data);
         })
 };
 
