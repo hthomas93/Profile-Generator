@@ -168,7 +168,36 @@ function generateHTML(data) {
             zoom: .75; 
           } 
          }
-      </style>`
+      </style>
+      <body>
+  <div class="wrapper">
+    <main>
+
+      <h1 class="photo-header">${data.userName}</h1>
+
+      <img class="photo-header" src="${data.profileImage}" alt="">
+
+      <a class="photo-header" href="${data.userLocation}">Find me here!</a>
+
+      <a href="${data.ghProfile}">My github profile!</a>
+
+      <p>${data.userBlog}</p>
+
+      <p>${data.userBio}</p>
+
+      <h3>"Number of repositories: ${data.repoNum}"</h3>
+
+      <h3>"Number of followers: ${data.followerNum}"</h3>
+
+      <h3>"Number following: ${data.followingNum}"</h3>
+
+      <h3>"Number of Github starred repos: ${ghStars}"</h3>
+
+
+    </main>
+  </div>
+</body>
+`
 };
 
 module.exports = {

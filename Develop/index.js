@@ -7,6 +7,7 @@ const inquirer = require("inquirer");
 
 const generate = require("./generateHTML.js");
 let color;
+let ghSTars;
 
 // call the inquirer node module
 inquirer
@@ -63,7 +64,7 @@ function ghAPI(ghURL) {
                 color: color,
                 profileImage: response.data.avatar_url + ".png",
                 userName: response.data.login,
-                userLocation: response.data.location,
+                userLocation: "https://www.google.com/maps/place/" + response.data.location.replace(/\s/g, "+"),
                 ghProfile: response.data.html_url,
                 userBlog: response.data.blog,
                 userBio: response.data.bio,
@@ -71,6 +72,16 @@ function ghAPI(ghURL) {
                 followerNum: response.data.followers,
                 followingNum: response.data.following
             }
+            if (!data.userLocation) {
+                data.userLocation = "https://www.google.com/maps";
+            }
+            if (data.userBlog == '') {
+                data.userBlog = "No blog information provided!";
+            }
+            if (!data.userBio) {
+                data.userBio = "No bio information provided!";
+            }
+
             const html = generate.generateHTML(data);
             fs.writeFile(`${data.userName}.html`, html, function (err) {
                 if (err) {
@@ -84,6 +95,7 @@ function ghStarAPI(ghStarURL) {
 
     axios.get(ghStarURL)
         .then(function (responseStars) {
-            console.log(responseStars.data.length);
+            ghStars = responseStars.data.length;
         });
 };
+
