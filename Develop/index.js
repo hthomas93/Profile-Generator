@@ -7,7 +7,7 @@ const inquirer = require("inquirer");
 
 const generate = require("./generateHTML.js");
 let color;
-let ghSTars;
+let ghStars;
 
 // call the inquirer node module
 inquirer
@@ -60,32 +60,38 @@ function ghAPI(ghURL) {
     axios.get(ghURL)
         .then(function (response) {
             console.log(response.data);
-            const data = {
+            let data = {
                 color: color,
                 profileImage: response.data.avatar_url + ".png",
                 userName: response.data.login,
-                userLocation: "https://www.google.com/maps/place/" + response.data.location.replace(/\s/g, "+"),
                 ghProfile: response.data.html_url,
-                userBlog: response.data.blog,
-                userBio: response.data.bio,
                 repoNum: response.data.public_repos,
                 followerNum: response.data.followers,
                 followingNum: response.data.following
             }
-            if (!data.userLocation) {
-                data.userLocation = "https://www.google.com/maps";
-            }
-            if (data.userBlog == '') {
-                data.userBlog = "No blog information provided!";
-            }
-            if (!data.userBio) {
-                data.userBio = "No bio information provided!";
-            }
 
-            const html = generate.generateHTML(data);
+            if (!response.data.location) {
+                data.userLocation = "https://www.google.com/maps";
+            } else {
+                data.userLocation = "https://www.google.com/maps/place/" + response.data.location.replace(/\s/g, "+")
+            };
+
+            if (response.userBlog == '') {
+                data.userBlog = "No blog information provided!";
+            } else {
+                data.userBlog = response.data.blog
+            };
+
+            if (!response.userBio) {
+                data.userBio = "No bio information provided!";
+            } else {
+                userBio = response.data.bio
+            };
+
+            const html = generate.generateHTML(data, ghStars);
             fs.writeFile(`${data.userName}.html`, html, function (err) {
                 if (err) {
-                    console.log("It's fucked!" + err);
+                    console.log("It's borked!" + err);
                 }
             })
         })
@@ -96,6 +102,7 @@ function ghStarAPI(ghStarURL) {
     axios.get(ghStarURL)
         .then(function (responseStars) {
             ghStars = responseStars.data.length;
+            console.log(ghStars);
         });
 };
 

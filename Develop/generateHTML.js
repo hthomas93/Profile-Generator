@@ -27,7 +27,7 @@ const colors = {
   }
 };
 
-function generateHTML(data) {
+function generateHTML(data, ghStars) {
   return `<!DOCTYPE html>
 <html lang="en">
    <head>
@@ -38,53 +38,68 @@ function generateHTML(data) {
       <link href="https://fonts.googleapis.com/css?family=BioRhyme|Cabin&display=swap" rel="stylesheet">
       <title>Document</title>
       <style>
+
           @page {
             margin: 0;
           }
+
          *,
          *::after,
          *::before {
          box-sizing: border-box;
          }
+
          html, body {
          padding: 0;
          margin: 0;
          }
+
          html, body, .wrapper {
          height: 100%;
          }
+
          .wrapper {
+         background-color: ${colors[data.color].wrapperBackground};
          padding-top: 100px;
          }
+
          body {
          background-color: white;
          -webkit-print-color-adjust: exact !important;
          font-family: 'Cabin', sans-serif;
          }
+
          main {
          background-color: #E9EDEE;
          height: auto;
          padding-top: 30px;
          }
+
          h1, h2, h3, h4, h5, h6 {
          font-family: 'BioRhyme', serif;
          margin: 0;
          }
+
          h1 {
          font-size: 3em;
          }
+
          h2 {
          font-size: 2.5em;
          }
+
          h3 {
          font-size: 2em;
          }
+
          h4 {
          font-size: 1.5em;
          }
+
          h5 {
          font-size: 1.3em;
          }
+
          h6 {
          font-size: 1.2em;
          }
@@ -101,6 +116,7 @@ function generateHTML(data) {
          width: 95%;
          border-radius: 6px;
          }
+
          .photo-header img {
          width: 250px;
          height: 250px;
@@ -109,29 +125,36 @@ function generateHTML(data) {
          margin-top: -75px;
          box-shadow: rgba(0, 0, 0, 0.3) 4px 1px 20px 4px;
          }
+
          .photo-header h1, .photo-header h2 {
          width: 100%;
          text-align: center;
          }
+
          .photo-header h1 {
          margin-top: 10px;
+         border: 6px solid ${colors[data.color].photoBorderColor};
          }
+
          .links-nav {
          width: 100%;
          text-align: center;
          padding: 20px 0;
          font-size: 1.1em;
          }
+
          .nav-link {
          display: inline-block;
          margin: 5px 10px;
          }
+
          .workExp-date {
          font-style: italic;
          font-size: .7em;
          text-align: right;
          margin-top: 10px;
          }
+
          .container {
          padding: 50px;
          padding-left: 100px;
@@ -150,6 +173,8 @@ function generateHTML(data) {
            padding: 20px;
            border-radius: 6px;
            margin: 20px;
+           background-color: ${colors[data.color].headerBackground};
+           color: ${colors[data.color].headerColor};
          }
 
          .col {
@@ -172,26 +197,29 @@ function generateHTML(data) {
       <body>
   <div class="wrapper">
     <main>
+      <div class = "photo-header">
+      <h1 class=>${data.userName}</h1>
 
-      <h1 class="photo-header">${data.userName}</h1>
+      <img class" src="${data.profileImage}" alt="">
 
-      <img class="photo-header" src="${data.profileImage}" alt="">
-
-      <a class="photo-header" href="${data.userLocation}">Find me here!</a>
-
-      <a href="${data.ghProfile}">My github profile!</a>
-
-      <p>${data.userBlog}</p>
-
+      <a class= href="${data.userLocation}">Find me here!</a>
+      <div class = "links-nav">
+         <div class="nav-link">
+        <a href="${data.ghProfile}">My github profile!</a>
+         </div>
+         <div class="nav-link">
+        <p>${data.userBlog}</p>
+        </div>
+      </   
       <p>${data.userBio}</p>
+    
+      <h3>Number of repositories: ${data.repoNum}</h3>
 
-      <h3>"Number of repositories: ${data.repoNum}"</h3>
+      <h3>Number of followers: ${data.followerNum}</h3>
 
-      <h3>"Number of followers: ${data.followerNum}"</h3>
+      <h3>Number following: ${data.followingNum}</h3>
 
-      <h3>"Number following: ${data.followingNum}"</h3>
-
-      <h3>"Number of Github starred repos: ${ghStars}"</h3>
+      <h3>Number of Github starred repos: ${ghStars}</h3>
 
 
     </main>
