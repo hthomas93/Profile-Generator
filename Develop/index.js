@@ -4,10 +4,13 @@ const fs = require("fs");
 const axios = require("axios").default;
 // requires the use of inquirer node package for user input
 const inquirer = require("inquirer");
+// requires the use of html-pdf node package to write the html page to pdf...obviously >_>
+const pdf = require("html-pdf");
 
 const generate = require("./generateHTML.js");
 let color;
 let ghStars;
+let username;
 
 // call the inquirer node module
 inquirer
@@ -52,7 +55,7 @@ inquirer
                 ghStarAPI(ghStarURL);
 
             });
-    });
+    })
 
 
 function ghAPI(ghURL) {
@@ -61,6 +64,7 @@ function ghAPI(ghURL) {
         .then(function (response) {
             console.log(response.data);
             let data = {
+                fullname: response.data.name,
                 color: color,
                 profileImage: response.data.avatar_url + ".png",
                 userName: response.data.login,
@@ -69,6 +73,9 @@ function ghAPI(ghURL) {
                 followerNum: response.data.followers,
                 followingNum: response.data.following
             }
+
+            username = response.data.login;
+            console.log(username);
 
             if (!response.data.location) {
                 data.userLocation = "https://www.google.com/maps";
@@ -88,15 +95,12 @@ function ghAPI(ghURL) {
                 userBio = response.data.bio
             };
 
-            const html = generate.generateHTML(data, ghStars);
-            fs.writeFile(`${data.userName}.html`, html, function (err) {
-                if (err) {
-                    console.log("It's borked!" + err);
-                }
-            })
+            const options = { format: 'Letter' };
+            pdf.create(generate.generateHTML(data, ghStars), options).toFile('profile.pdf', function (err, res) {
+                if (err) return console.log(err);
+            });
         })
 };
-
 function ghStarAPI(ghStarURL) {
 
     axios.get(ghStarURL)
@@ -105,4 +109,7 @@ function ghStarAPI(ghStarURL) {
             console.log(ghStars);
         });
 };
+
+
+
 
