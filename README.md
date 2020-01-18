@@ -16,4 +16,4 @@ Then, an API request is sent to Github that returns the user's information based
 
 Then, a pdf of the user's information is generated dynamically based on the information returned from the request.
 
-![example profile](example.png "Example Profile")
+![example profile](./Develop/example.png "Example Profile")
