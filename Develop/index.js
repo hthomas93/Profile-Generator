@@ -95,7 +95,7 @@ function ghAPI(ghURL) {
                 userBio = response.data.bio
             };
 
-            const options = { format: 'Letter' };
+            const options = { format: 'Letter', zoomFactor: '.75' };
             pdf.create(generate.generateHTML(data, ghStars), options).toFile('profile.pdf', function (err, res) {
                 if (err) return console.log(err);
             });
